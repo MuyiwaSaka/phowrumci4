@@ -7,14 +7,14 @@ use CodeIgniter\Model;
 class ClientModel extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'clients';
+	protected $table                = 'client';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDelete        = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = ['name','email','retainer_fee'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -39,4 +39,16 @@ class ClientModel extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+	public function findClientById($id)
+    {
+        $client = $this
+            ->asArray()
+            ->where(['id' => $id])
+            ->first();
+
+        if (!$client) throw new Exception('Could not find client for specified ID');
+
+        return $client;
+    }
 }
